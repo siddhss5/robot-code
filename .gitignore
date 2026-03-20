@@ -1,0 +1,30 @@
+# Workspace venv (shared across all member packages)
+.venv/
+uv.lock
+
+# Sibling repos — each is its own git repo, not tracked here
+asset_manager/
+geodude/
+geodude_assets/
+mj_environment/
+mj_manipulator/
+mujoco_menagerie/
+prl_assets/
+pycbirrt/
+tsr/
+
+# Old/orphan directories
+pyplanning/
+pyrave/
+pr_assets/
+
+# Loose files
+*.py
+*.txt
+*.md.bak
+*.zip
+*.jpg
+*.png
+Soda_Can_v3_L3*/
+__pycache__/
+*.pyc

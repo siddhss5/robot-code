@@ -1,0 +1,13 @@
+# Virtual workspace root — no installable package here.
+# Run `uv sync` here to install all workspace members in a shared venv.
+[tool.uv.workspace]
+members = [
+    "asset_manager",
+    "geodude",
+    "geodude_assets",
+    "mj_environment",
+    "mj_manipulator",
+    "prl_assets",
+    "pycbirrt",
+    "tsr",
+]

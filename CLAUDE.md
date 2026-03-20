@@ -12,7 +12,7 @@ Setup: `git clone https://github.com/siddhss5/robot-code && ./setup.sh`
 | `mj_manipulator/` | siddhss5/mj_manipulator | Generic arm control: planning, execution, Cartesian control, grasping |
 | `mj_environment/` | personalrobotics/mj_environment | MuJoCo environment wrapper |
 | `prl_assets/` | personalrobotics/prl_assets | Reusable objects (cans, bins) |
-| `pycbirrt/` | siddhss5/pycbirrt | CBiRRT motion planner with TSR constraints |
+| `pycbirrt/` | personalrobotics/pycbirrt | CBiRRT motion planner with TSR constraints |
 | `tsr/` | personalrobotics/tsr | Task Space Regions for grasp/place planning |
 | `asset_manager/` | personalrobotics/asset_manager | Loads objects from meta.yaml files |
 | `mujoco_menagerie/` | google-deepmind/mujoco_menagerie | UR5e, Franka base models (cloned by setup.sh, not a Python package) |

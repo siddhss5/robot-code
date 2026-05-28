@@ -42,6 +42,17 @@ else
 fi
 
 echo ""
+echo "==> Removing stale per-package venvs (workspace uses shared root .venv)..."
+# `uv run` inside a workspace member with its own .venv ignores the shared
+# workspace venv, which is a common silent footgun. See robot-code#62.
+shopt -s nullglob
+for d in */.venv; do
+    echo "    removing $d"
+    rm -rf "$d"
+done
+shopt -u nullglob
+
+echo ""
 echo "==> Installing Python workspace (uv sync)..."
 uv sync
 

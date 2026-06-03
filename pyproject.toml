@@ -19,3 +19,23 @@ members = [
     "pycbirrt",
     "tsr",
 ]
+
+# Resolve every inter-member dependency from the workspace, declared at the
+# root so the mapping is authoritative for all members. Members also declare
+# these in their own pyprojects (for standalone use), but uv 0.11 validates a
+# member's `workspace = true` sources while *building* it and rejects them if
+# the workspace context isn't established at the root — which is what broke
+# `uv sync` on geodude (-> mj-viser "is not a workspace member"). See #74.
+[tool.uv.sources]
+ada-assets = { workspace = true }
+ada-mj = { workspace = true }
+asset-manager = { workspace = true }
+geodude = { workspace = true }
+geodude-assets = { workspace = true }
+mj-environment = { workspace = true }
+mj-manipulator = { workspace = true }
+mj-manipulator-ros = { workspace = true }
+mj-viser = { workspace = true }
+prl-assets = { workspace = true }
+pycbirrt = { workspace = true }
+tsr = { workspace = true }

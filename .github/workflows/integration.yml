@@ -22,6 +22,20 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  gitlink-freshness:
+    # Gate: every tracked gitlink must be at the tip of its sibling repo's
+    # default branch, so the workspace pointers can't silently drift behind
+    # merged work. Uses ls-remote (no sibling checkout needed).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check gitlinks are at their default-branch tips
+        env:
+          GH_TOKEN: ${{ secrets.SIBLING_CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global url."https://x-access-token:${GH_TOKEN}@github.com/personalrobotics/".insteadOf "https://github.com/personalrobotics/"
+          ./scripts/check_gitlink_freshness.sh
+
   integration:
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -74,7 +88,7 @@ jobs:
         run: |
           set +e
           fail=0
-          for d in asset_manager geodude geodude_assets mj_environment mj_manipulator mj_viser prl_assets pycbirrt tsr; do
+          for d in ada_assets ada_mj asset_manager geodude geodude_assets mj_environment mj_manipulator mj_viser prl_assets pycbirrt tsr; do
             if [ -d "$d/tests" ]; then
               echo "::group::$d tests"
               (cd "$d" && uv run pytest tests/ -q) || fail=1
@@ -88,10 +102,10 @@ jobs:
 
       - name: Import smoke check
         run: |
-          uv run python -c "import asset_manager, geodude, geodude_assets, mj_environment, mj_manipulator, mj_viser, prl_assets, pycbirrt, tsr; print('all imports OK')"
+          uv run python -c "import ada_assets, ada_mj, asset_manager, geodude, geodude_assets, mj_environment, mj_manipulator, mj_viser, prl_assets, pycbirrt, tsr; print('all imports OK')"
 
   notify-on-nightly-failure:
-    needs: integration
+    needs: [integration, gitlink-freshness]
     if: failure() && github.event_name == 'schedule'
     runs-on: ubuntu-latest
     permissions:

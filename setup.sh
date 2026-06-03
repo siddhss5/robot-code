@@ -4,7 +4,18 @@
 # the shared Python environment.
 set -euo pipefail
 
+# Every sibling repo the workspace tracks. The ADA repos (ada_assets, ada_mj)
+# are uv workspace members, so omitting them breaks `uv sync` on a fresh clone;
+# the ROS 2 repos (ada_ros2, ada_feeding, articutool_ros2) are not Python
+# packages but are part of the workspace. This list must stay in sync with the
+# tracked gitlinks — scripts/check_gitlink_freshness.sh gates that they are not
+# stale. ada_feeding's default branch is ros2-devel (git clone picks it up).
 REPOS=(
+    "https://github.com/personalrobotics/ada_assets"
+    "https://github.com/personalrobotics/ada_feeding"
+    "https://github.com/personalrobotics/ada_mj"
+    "https://github.com/personalrobotics/ada_ros2"
+    "https://github.com/personalrobotics/articutool_ros2"
     "https://github.com/personalrobotics/asset_manager"
     "https://github.com/personalrobotics/geodude"
     "https://github.com/personalrobotics/geodude_assets"

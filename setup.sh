@@ -36,11 +36,17 @@ cd "$(dirname "$0")"
 echo "==> Cloning repos..."
 for url in "${REPOS[@]}"; do
     dir=$(basename "$url")
-    if [ ! -d "$dir" ]; then
-        echo "    cloning $dir"
-        git clone "$url"
-    else
+    # Several siblings are tracked as gitlinks (submodule-style pointers) but
+    # there is no .gitmodules, so a fresh checkout leaves them as EMPTY
+    # placeholder directories. A plain `[ ! -d ]` guard would see the dir and
+    # skip it, leaving an empty (broken) uv workspace member. Detect a populated
+    # repo by its .git entry instead, and clone into the empty placeholder.
+    if [ -e "$dir/.git" ]; then
         echo "    $dir already present, skipping"
+    else
+        echo "    cloning $dir"
+        rm -rf "$dir"        # drop the empty gitlink placeholder, if any
+        git clone "$url"
     fi
 done
 
